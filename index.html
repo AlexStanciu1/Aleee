@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universul Nostru ✨</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Dancing+Script:wght@700&display=swap');
+
+        :root {
+            --bg-pink: #fce4ec;
+            --card-white: #ffffff;
+            --text-main: #d81b60;
+            --text-secondary: #880e4f;
+            --btn-close: #b0bec5;
+            --sticky-note: #fff1f3;
+            --journal-paper: #fffafb;
+            --coupon-gold: #ffe0b2;
+            --accent-pink: #ff80ab;
+        }
+
+        /* Fundal animat fluid cu temă romantică */
+        body {
+            background: linear-gradient(-45deg, #ffc107, #ff80ab, #f8bbd0, #ff8a80);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Tema Specială la Streak de 5+ zile */
+        .gold-theme {
+            background: linear-gradient(-45deg, #fff9c4, #ff80ab, #ff4081, #ff8a80) !important;
+            background-size: 400% 400% !important;
+            animation: gradientBG 15s ease infinite !important;
+            --text-main: #ff4081 !important;
+            --text-secondary: #c2185b !important;
+            --accent-pink: #ff4081 !important;
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Fredoka', sans-serif;
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        /* Widget Streak */
+        .streak-widget {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid var(--accent-pink);
+            padding: 12px 25px;
+            border-radius: 25px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(216, 27, 96, 0.15);
+            margin: 15px 0;
+            position: relative;
+        }
+        .streak-heart {
+            font-size: 1.8rem;
+            animation: pulseHeart 1s infinite alternate;
+            margin-bottom: 3px;
+        }
+        @keyframes pulseHeart {
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px #ff4081); }
+            100% { transform: scale(1.3); filter: drop-shadow(0 0 10px #e91e63); }
+        }
+        .streak-bar-container {
+            width: 100px;
+            height: 6px;
+            background: #f8bbd0;
+            border-radius: 3px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+        .streak-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4081, #d81b60);
+            width: 20%;
+        }
+
+        /* Alertă Personalizată Parolă Greșită */
+        .hey-overlay {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(216, 27, 96, 0.95);
+            color: white;
+            padding: 18px 35px;
+            border-radius: 25px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            font-family: 'Fredoka', sans-serif;
+            z-index: 9999;
+            box-shadow: 0 10px 30px rgba(216, 27, 96, 0.3);
+            text-align: center;
+            pointer-events: none;
+            border: 2px solid white;
+        }
+        .hey-active { transform: translate(-50%, -50%) scale(1); animation: floatHey 0.4s ease infinite alternate; }
+        @keyframes floatHey {
+            0% { transform: translate(-50%, -52%) scale(1); }
+            100% { transform: translate(-50%, -48%) scale(1.05); }
+        }
+
+        .coupon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .coupon { background: var(--sticky-note); border: 2px dashed var(--accent-pink); padding: 15px; border-radius: 18px; cursor: pointer; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.03); text-align: center; }
+        .coupon:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(240,98,146,0.2); }
+        .coupon h4 { margin: 0; font-size: 0.95rem; color: var(--text-secondary); }
+        .coupon p { font-size: 0.75rem; margin: 8px 0 0; color: #880e4f; line-height: 1.4; }
+        
+        .floating-star { position: absolute; color: rgba(216, 27, 96, 0.2); animation: rise 8s infinite linear; z-index: 0; pointer-events: none; }
+        @keyframes rise { 0% { transform: translateY(110vh) scale(1) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-10vh) scale(1.5) rotate(360deg); opacity: 0; } }
+
+        /* Contorizor pe Dashboard */
+        .live-counter-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border: 2px solid var(--accent-pink);
+            border-radius: 20px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            width: 90%;
+            max-width: 440px;
+            box-shadow: 0 8px 20px rgba(216,27,96,0.08);
+            text-align: center;
+        }
+        .live-counter-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+        .live-counter-display {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        .counter-unit {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--text-main);
+            background: #fff0f3;
+            padding: 4px 8px;
+            border-radius: 8px;
+            min-width: 45px;
+            border: 1px solid rgba(240,98,146,0.2);
+        }
+        .counter-unit span {
+            display: block;
+            font-size: 1.1rem;
+        }
+        .counter-unit label {
+            font-size: 0.5rem;
+            color: #880e4f;
+            display: block;
+            margin-top: 1px;
+            font-weight: 600;
+        }
+
+        /* Countdown ecran blocat */
+        .countdown { display: flex; gap: 8px; margin: 15px 0; justify-content: center; }
+        .time-unit { background: white; padding: 10px; border-radius: 14px; min-width: 55px; box-shadow: 0 6px 15px rgba(0,0,0,0.05); border: 1px solid var(--accent-pink); }
+        .time-unit span { display: block; font-weight: bold; font-size: 1.1rem; color: var(--text-main); }
+        .time-unit label { font-size: 0.55rem; text-transform: uppercase; color: #880e4f; font-weight: 600; }
+
+        .screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10; padding: 20px; text-align: center; }
+
+        /* Meniu Grid modern */
+        .horizontal-menu { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 12px; 
+            width: 95%; 
+            max-width: 460px; 
+            padding: 15px; 
+            overflow-y: auto; 
+            max-height: 52vh;
+        }
+        .menu-card { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(5px);
+            border-radius: 22px; 
+            padding: 15px 5px; 
+            box-shadow: 0 8px 20px rgba(216,27,96,0.06); 
+            cursor: pointer; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 6px;
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+        .menu-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(216,27,96,0.12); background: #ffffff; }
+        .menu-card:active { transform: scale(0.95); }
+        .menu-card .icon { font-size: 1.6rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08)); }
+        .menu-card span { font-size: 0.65rem; font-weight: 600; color: var(--text-secondary); text-align: center; }
+
+        /* Glassmorphism modern pentru overlays */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(136, 14, 79, 0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; z-index: 100; }
+        .window { background: rgba(255, 255, 255, 0.95); width: 95%; max-width: 500px; border-radius: 32px; padding: 28px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 25px 55px rgba(136,14,79,0.15); border: 2px solid rgba(255,255,255,0.8); }
+
+        .close-x {
+            position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 1.3rem; color: #b0bec5; cursor: pointer; font-weight: bold; padding: 5px; line-height: 1;
+        }
+        .close-x:hover { color: #f44336; transform: scale(1.1); }
+
+        .btn-main { background: linear-gradient(135deg, var(--text-main), #ff4081); color: white; border: none; padding: 12px 30px; border-radius: 25px; font-weight: 600; cursor: pointer; box-shadow: 0 5px 15px rgba(216,27,96,0.2); }
+        .btn-main:active { transform: scale(0.97); }
+        .btn-no { background: #bbb; color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; position: absolute; transition: 0.2s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        .sticky { background: var(--sticky-note); padding: 14px; border-radius: 12px; box-shadow: 3px 3px 12px rgba(0,0,0,0.04); font-size: 0.85rem; text-align: left; margin-bottom: 12px; border-top: 10px solid rgba(240,98,146,0.2); word-break: break-word; color: #37474f; line-height: 1.4; }
+        .mood-btns { font-size: 2.5rem; display: flex; justify-content: center; gap: 15px; margin: 15px 0; }
+        .mood-btn { cursor: pointer; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+        .mood-btn:hover { transform: scale(1.25); }
+        textarea, input[type="text"], input[type="password"], input[type="date"], input[type="time"] { width: 100%; padding: 14px; border-radius: 16px; border: 1px solid #f8bbd0; font-family: inherit; margin-bottom: 10px; background: rgba(255,255,255,0.7); color: inherit; }
+        textarea:focus, input:focus { outline: none; border-color: var(--text-main); background: #ffffff; }
+
+        /* Monedă stilizată */
+        .coin-wrapper { perspective: 1000px; width: 120px; height: 120px; margin: 20px auto; }
+        .coin-element { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.1s linear; }
+        .coin-side { position: absolute; width: 100%; height: 100%; border-radius: 50%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: white; box-shadow: 0 10px 25px rgba(0,0,0,0.18); border: 4px solid #fff; }
+        .coin-front { background: linear-gradient(135deg, #ffd54f, #ffb300); transform: rotateY(0deg); }
+        .coin-back { background: linear-gradient(135deg, #ff80ab, #f50057); transform: rotateY(180deg); }
+        @keyframes spinCoinAnimation { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(1800deg); } }
+
+        /* Buton Plutitor Stare */
+        .busy-floating-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #4caf50;
+            color: white;
+            border: 2px solid white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+            cursor: pointer;
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .busy-floating-btn.is-busy {
+            background: #e53935;
+            box-shadow: 0 6px 16px rgba(229, 57, 53, 0.4);
+        }
+        .busy-floating-btn:active { transform: scale(0.9); }
+
+        /* Slider supărare */
+        .anger-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #f8bbd0, #f06292, #d81b60);
+            outline: none;
+            margin: 15px 0;
+        }
+        .anger-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ad1457;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+        }
+
+        /* ==================== GRAFICĂ NOUĂ ȘI STILIZARE REVIZUITĂ PENTRU JURNALUL CULINAR ==================== */
+        .food-search-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .food-search-wrapper .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #f06292;
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+        .food-search { 
+            margin-bottom: 0 !important; 
+            padding-left: 42px !important; 
+            border: 2px solid #f8bbd0 !important;
+            border-radius: 20px !important;
+            font-size: 0.95rem;
+            background: rgba(255, 255, 255, 0.9) !important;
+        }
+        .food-search:focus {
+            border-color: var(--text-main) !important;
+            box-shadow: 0 0 8px rgba(216, 27, 96, 0.2);
+        }
+        .food-list {
+            text-align: left;
+            max-height: 220px;
+            overflow-y: auto;
+            background: rgba(255,255,255,0.85);
+            border-radius: 20px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #f8bbd0;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.03);
+        }
+        /* Scrollbar elegant pentru lista de mâncare */
+        .food-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .food-list::-webkit-scrollbar-track {
+            background: rgba(248, 187, 208, 0.1);
+            border-radius: 10px;
+        }
+        .food-list::-webkit-scrollbar-thumb {
+            background: #ff80ab;
+            border-radius: 10px;
+        }
+        .food-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 12px;
+            border-bottom: 1px solid #ffebee;
+            font-size: 0.95rem;
+            color: #455a64;
+            cursor: pointer;
+        }
+        .food-item:hover {
+            background-color: #fff1f3;
+            transform: translateX(3px);
+        }
+        .food-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--text-main);
+            border-radius: 6px;
+            border: 2px solid #ff80ab;
+            margin: 0;
+        }
+        .food-item label {
+            cursor: pointer;
+            flex-grow: 1;
+            user-select: none;
+        }
+
+        .food-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .food-tabs::-webkit-scrollbar {
+            height: 4px;
+        }
+        .food-tabs::-webkit-scrollbar-thumb {
+            background: rgba(216, 27, 96, 0.2);
+            border-radius: 10px;
+        }
+        .food-tab {
+            background: #fce4ec;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-main);
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(216,27,96,0.05);
+        }
+        .food-tab:hover {
+            background: #f8bbd0;
+            transform: translateY(-1px);
+        }
+        .food-tab.active {
+            background: linear-gradient(135deg, var(--text-main), #ff4081);
+            color: white;
+            box-shadow: 0 4px 12px rgba(216,27,96,0.3);
+        }
+
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            font-size: 2.2rem;
+            margin: 12px 0;
+            direction: rtl;
+        }
+        .star-rating span {
+            cursor: pointer;
+            color: #e0e0e0;
+            transition: transform 0.2s, color 0.2s;
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05));
+        }
+        .star-rating span:hover,
+        .star-rating span:hover ~ span {
+            color: #ff4081;
+            transform: scale(1.2);
+        }
+        .star-rating span.active,
+        .star-rating span.active ~ span {
+            color: #ff4081;
+        }
+
+        /* Sugestia culinară */
+        .food-suggestion-bubble {
+            background: #fff3e0;
+            border: 2px dashed #ffb74d;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(255,183,77,0.15);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Stil generator pupici */
+        .kiss-generator-box {
+            text-align: center;
+            padding: 15px;
+        }
+        .kiss-btn {
+            font-size: 3rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            animation: pulseHeart 1s infinite alternate;
+            display: block;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="stars-container"></div>
+    
+    <div id="hey-alert" class="hey-overlay">Heiiiiii🧏🏼‍♂️ Ne potrivim! ❤️</div>
+
+    <div id="page-lock" class="screen" style="display: flex;">
+        <h1 style="font-family: 'Dancing Script'; font-size: 3.5rem; margin: 0; color: var(--text-secondary); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));">Pentru Iubita Mea ✨</h1>
+        
+        <div class="streak-widget">
+            <div class="streak-heart">💖</div>
+            <div style="font-size: 0.8rem; font-weight: bold; color: var(--text-secondary);">Zile împreună: <span id="streak-count-val">1</span></div>
+            <div class="streak-bar-container"><div id="streak-bar-progress" class="streak-bar-fill"></div></div>
+        </div>
+
+        <h3 style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 5px;">Suntem împreună de:</h3>
+        <div class="countdown">
+            <div class="time-unit"><span id="days">00</span><label>Zile</label></div>
+            <div class="time-unit"><span id="hours">00</span><label>Ore</label></div>
+            <div class="time-unit"><span id="mins">00</span><label>Min</label></div>
+            <div class="time-unit"><span id="secs">00</span><label>Sec</label></div>
+        </div>
+        <input type="password" id="passInput" style="text-align: center; max-width: 260px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);" placeholder="Codul secret">
+        
+        <div id="password-errors-count" style="font-size: 0.9rem; color: #d32f2f; font-weight: bold; margin-top: 5px;">Greșeli: 0</div>
+        
+        <div style="font-size: 0.8rem; margin: 12px 0; color: var(--text-secondary); font-style: italic; max-width: 280px;">Indiciu: Cât la sută ne potrivim? 😉</div>
+        <button class="btn-main" onclick="check()">Deschide Inima</button>
+    </div>
+
+    <div id="page-ask" class="screen">
+        <h2 style="font-size: 2.2rem; color: var(--text-secondary); max-width: 400px; line-height: 1.3;">Vrei să explorezi Universul Nostru? 💖</h2>
+        <div style="position: relative; width: 100%; height: 300px; margin-top: 20px;">
+            <button id="yes-btn" class="btn-main" onclick="yesAnswer()">Normal! ❤️</button>
+            <button id="no-btn" class="btn-no">Nu cred 😜</button>
+        </div>
+    </div>
+
+    <div id="page-dashboard" class="screen">
+        <button class="busy-floating-btn" id="busy-btn" onclick="toggleBusyState()" title="Schimbă Starea">👋</button>
+
+        <div class="streak-widget" style="padding: 8px 20px; margin-bottom: 10px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="streak-heart" style="font-size: 1.4rem;">💖</div>
+                <div id="streak-banner-dash" style="font-size: 0.85rem; font-weight: bold; color: var(--text-secondary);"></div>
+            </div>
+        </div>
+
+        <!-- Contorizor Live Direct pe Meniu -->
+        <div class="live-counter-container">
+            <div class="live-counter-title">Suntem împreună de:</div>
+            <div class="live-counter-display">
+                <div class="counter-unit"><span id="dash-days">00</span><label>Zile</label></div>
+                <div class="counter-unit"><span id="dash-hours">00</span><label>Ore</label></div>
+                <div class="counter-unit"><span id="dash-mins">00</span><label>Min</label></div>
+                <div class="counter-unit"><span id="dash-secs">00</span><label>Sec</label></div>
+            </div>
+        </div>
+        
+        <h2 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--text-secondary); font-family: 'Fredoka'; font-weight: 600;">Universul Iubitei Mele ✨</h2>
+        
+        <div class="horizontal-menu">
+            <div class="menu-card" onclick="openO('o-scrisoare')"><span class="icon">✉️</span><span>Scrisoare</span></div>
+            <div class="menu-card" onclick="openO('o-rules')"><span class="icon">📜</span><span>Ghid</span></div>
+            <div class="menu-card" onclick="openO('o-mancare')"><span class="icon">🍽️</span><span>Ce am mâncat</span></div>
+            <div class="menu-card" onclick="openO('o-poze')"><span class="icon">📸</span><span>Amintiri</span></div>
+            <div class="menu-card" onclick="openO('o-journal')"><span class="icon">📖</span><span>Jurnal</span></div>
+            <div class="menu-card" onclick="openO('o-mood')"><span class="icon">✨</span><span>Mood</span></div>
+            <div class="menu-card" onclick="openO('o-bilete')"><span class="icon">🎟️</span><span>Bilete de Alint</span></div>
+            <div class="menu-card" onclick="openO('o-bucket')"><span class="icon">✈️</span><span>Lista de dorințe</span></div>
+            <div class="menu-card" onclick="openO('o-jar')"><span class="icon">🏺</span><span>Borcanul cu Mesaje</span></div>
+            <div class="menu-card" onclick="openO('o-motivation')"><span class="icon">💡</span><span>Mesaje Dulci</span></div>
+            <div class="menu-card" onclick="openO('o-dreams')"><span class="icon">☁️</span><span>Dream Catcher</span></div>
+            <div class="menu-card" onclick="openO('o-music')"><span class="icon">🎵</span><span>Playlist-ul Nostru</span></div>
+            <div class="menu-card" onclick="openO('o-wheel')"><span class="icon">🎡</span><span>Roata Destinului</span></div>
+            <div class="menu-card" onclick="openO('o-coin')"><span class="icon">🪙</span><span>Aruncă Banul</span></div>
+            <div class="menu-card" onclick="openO('o-greenhouse')"><span class="icon">🌸</span><span>Grădina Noastră</span></div>
+            <div class="menu-card" onclick="openO('o-harta')"><span class="icon">📍</span><span>Harta Noastră</span></div>
+            <div class="menu-card" onclick="openO('o-pdf-viewer')"><span class="icon">📄</span><span>Contractul</span></div>
+            <div class="menu-card" onclick="openO('o-pupic')"><span class="icon">💋</span><span>Vreau pupiccc</span></div>
+        </div>
+    </div>
+
+    <!-- GENERATOR DE PUPICCC -->
+    <div id="o-pupic" class="overlay"><div class="window">
+        <button class="close-x" onclick="closeO()">×</button>
+        <h2>💋 Generator de Pupici</h2>
+        <p style="font-size: 0.85rem; color: #546e7a;">Ți-e dor de un pupic? Apasă pe buze și trimite cererea instant pe mail!</p>
+        <div class="kiss-generator-box">
+            <button class="kiss-btn" onclick="sendKissRequest()">💋</button>
+            <div id="kiss-status" class="sticky" style="display:none; text-align:center; font-weight:bold; background:#fff0f2;"></div>
+        </div>
+        <button class="btn-main" style="background:#bbb; width:100%; margin-top:8px;" onclick="closeO()">Închide</button>
+    </div></div>
+
+    <div id="o-coin" class="overlay"><div class="window">
+        <button class="close-x" onclick="closeO()">×</button>
+        <h2>🪙 Decizii Rapide</h2>
+        <p style="font-size: 0.85rem; color: #546e7a;">Nu știi cine are dreptate sau ce facem? Lasă moneda să decidă!</p>
+        
+        <div class="coin-wrapper">
+            <div class="coin-element" id="coin-obj">
+                <div class="coin-side coin-front">Alex ❤️</div>
+                <div class="coin-side coin-back">Alee 💖</div>
+            </div>
+        </div>
+
+        <div id="coin-result" class="sticky" style="display:none; text-align:center; font-weight:bold; background:#ffebee;"></div>
+        
+        <button class="btn-main" style="width:100%" id="flip-btn" onclick="flipCoin()">Dă cu banul! 🪙</button>
+        <button class="btn-main" style="background:#bbb; width:100%; margin-top:8px;" onclick="closeO()">Închide</button>
+    </div></div>
+
+    <div id="o-poze" class="overlay"><div class="window">
+        <button class="close-x" onclick="closeO()">×</button>
+        <h2>📸 Amintirile Noastre</h2>
+        <video controls style="width:100%; border-radius:16px; margin-bottom:12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);"><source src="revelioncheers.mov"></video>
+        <video controls style="width:100%; border-radius:16px; margin-bottom:12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);"><source src="dans.mov"></video>
+        <img src="gps.jpg" style="width:100%; margin-top:10px; border-radius:16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);" alt="img">
+        <img src="urmatoarea carte.jpg" style="width:100%; margin-top:10px; border-radius:16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);" alt="img">
+        <img src="eve.jpg" style="width:100%; margin-top:10px; border-radius:16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);" alt="img">
+        <img src="plecare.jpg" style="width:100%; margin-top:10px; border-radius:16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);" alt="img">
+        <img src="buncacool.png" style="width:100%; margin-top:10px; border-radius:16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);" alt="img">
+        <img src="ai.jpg" style="width:100%; margin-top:10px; border-radius:16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);" alt="img">
+        <button class="btn-main" style="margin-top:20px; width:100%" onclick="closeO()">Închide</button>
+    </div></div>
+
+    <div id="o-mood" class="overlay"><div class="window">
+        <button class="close-x" onclick="closeO()">×</button>
+        <h2>✨ Cum te simți azi?</h2>
+        <div class="mood-btns">
+            <span class="mood-btn" onclick="moodMsg('😊','Mă bucur enorm să te văd fericită! Zâmbetul tău e totul! ❤️')">😊</span>
+            <span class="mood-btn" onclick="moodMsg('😁','Minunat! Energia ta îmi luminează ziua! 😍')">😁</span>
+            <span class="mood-btn" onclick="moodMsg('😴','Odihnește-te, prințesă. Sunt aici să am grijă de tine. 💖')">😴</span>
+            <span class="mood-btn" onclick="moodMsg('😔','Dacă s-a întâmplat ceva, știi că sunt mereu aici să te strâng în brațe. ❤️')">😔</span>
+        </div>
+        
+        <hr style="border:0; border-top: 1px solid #e0e0e0; margin: 20px 0;">
+        <h3 style="font-size:1.1rem; margin-bottom:5px; color: var(--text-secondary);">Cât de supărată ești acum pe mine?</h3>
+        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #78909c; padding: 0 5px; font-weight: 600;">
+            <span>0% (Deloc)</span>
+            <span>50% (Sper că nu mult...)</span>
+            <span>100% (Vin repede cu flori!)</span>
+        </div>
+        <input type="range" min="0" max="100" value="0" class="anger-slider" id="angerRange" oninput="updateAngerLabel(this.value)">
+        <div style="font-size: 1.2rem; font-weight: bold; color: #ad1457; margin-bottom: 12px;">Nivel actual: <span id="angerVal">0%</span></div>
+        <button class="btn-main" style="width:100%; background: linear-gradient(135deg, #f06292, #d81b60); box-shadow: 0 4px 12px rgba(216,27,96,0.2); margin-bottom: 10px;" onclick="sendAngerLevel()">Trimite nivelul de supărare 💔</button>
+        
+        <div id="mood-text" class="sticky" style="display:none; text-align:center;"></div>
+        <button class="btn-main" style="width:100%; background: #bbb;" onclick="closeO()">Închide</button>
+    </div></div>
+
+    <div id="o-journal" class="overlay"><div class="window">
+        <button class="close-x" onclick="closeO()">×</button>
+        <h2>📖 Jurnalul Secret</h2>
+        <textarea id="j-in" rows="3" placeholder="Scrie un gând frumos, o idee sau ce ai visat să facem împreună..."></textarea>
+        <button class="btn-main" style="width:100%" onclick="addJ()">Salvează în Jurnal</button>
+        <div id="j-list" style="margin-top:15px; max-height: 200px; overflow-y: auto;"></div>
+        <button class="btn-main" style="background:#bbb; width:100%; margin-top:8px;" onclick="closeO()">Închide</button>
+    </div></div>
+
+    <div id="o-motivation" class="overlay"><div class="window">
+        <button class="close-x" onclick="closeO()">×</button>
+        <h2>💡 Mesaje Dulci pentru Alex (24h)</h2>
+        <input type="text" id="m-in" placeholder="Trimite un gând dulce sau o promisiune mică...">
+        <button class="btn-main" style="width:100%" onclick="addM()">Trimite Gânduri ❤️</button>
+        <div id="m-list" style="margin-top:15px; max-height: 200px; overflow-y: auto;"></div>
+        <button class="btn-main" style="background:#bbb; width:100%; margin-top:8px;" onclick="closeO()">Închide</button>
+    </div></div>
+
+    <div id="o-bilete" class="overlay"><div class="window">
+        <button class="close-x" onclick="closeO()">×</button>
+        <h2>🎟️ Bilete Magice de Alint</h2>
+        <p style="font-size: 0.75rem; color: #546e7a;">Alege un bilet de răsfăț și îl voi onora în cel mai scurt timp!</p>
+        <div class="coupon-grid">
+            <div class="coupon" onclick="useCoupon('Apel de Iubire')">
+                <h4>📞 Apel de Iubire</h4>
+                <p>Să-ți aud vocea dulce ore în șir și să-ți spun cât de mult țin la tine.</p>
+            </div>
+            <div class="coupon" onclick="useCoupon('Masaj / Alint')">
+                <h4>💆‍♀️ Răsfăț & Alint</h4>
+                <p>O zi întreagă în care te strâng în brațe și te pupacesc.</p>
+            </div>
+            <div class="coupon" onclick="useCoupon('Intalnire Romantica')">
+                <h4>🌹 Întâlnire Magică</h4>
+                <p>Pregătesc o surpriză romantică, doar pentru noi doi, să-ți văd zâmbetul minunat.</p>
+            </div>
+            <div class="coupon" onclick="useCoupon('Seara de Film')">
+                <h4>🍿 Seara Noastră</h4>
+                <p>Ne uităm la emisiunea ta preferată sau la ce film vrei tu!</p>
+            </div>
+        </div>
+        <button class="btn-main" style="width:100%; margin-top:20px;" onclick="closeO()">Închide</button>
+    </div></div>
+
+    <div id="o-harta" class="overlay"><div class="window">
+        <button class="close-x" onclick="closeO()">×</button>
+        <h2>📍 Unde A Început Totul</h2>
+        <p style="font-size:0.85rem; margin-bottom:15px; color:#546e7a;">Locul magic în care ne-am cunoscut prima dată! 😂❤️</p>
+        <a href="https://www.google.com/maps/place/44%C2%B043'41.3%22N+24%C2%B045'10.3%22E/@44.7281526,24.7517784,18z/data=!3m1!4b1!4m13!1m8!3m7!1s0x40b2a0d79633d7c7:0xb5964ba558b4e884!2zMTE3NjQxIELEg27Eg3JlxZ90aQ!3b1!8m2!3d44.7282481!4d24.7530166!16s%2Fg%2F122hjjyk!3m3!8m2!3d44.728151!4d24.752861!5m1!1e1?entry=ttu&g_ep=EgoyMDI2MDYyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-main" style="display: block; text-align: center; text-decoration: none; width: 100%;">
+            Deschide Harta Amintirilor 📍
+        </a>
+        <button class="btn-main" style="background:#bbb; width:100%; margin-top:10px;" onclick="closeO()">Închide</button>
+    </div></div>
+
+    <div id="o-scrisoare" class="overlay">
+        <div class="window" style="background: #fffafb; border: 1px solid #f8bbd0; box-shadow: inset 0 0 50px rgba(0,0,0,0.04);">
+            <button class="close-x" onclick="closeO()">×</button>
+            <h2 style="font-family: 'Dancing Script', cursive; font-size: 2.2rem;">✉️ O scrisoare pentru sufletul meu</h2>
+            
+            <div id="envelope-container" style="position: relative; min-height: 350px; cursor: pointer;" onclick="openLetter()">
+                <div id="wax-seal" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5; text-align: center;">
+                    <div style="width: 75px; height: 75px; background: #d81b60; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(216,27,96,0.3); border: 3px solid #880e4f;">
+                        <span style="color: gold; font-size: 2rem;">❤️</span>
+                    </div>
+                    <p style="font-size: 0.75rem; color: #880e4f; font-weight: bold; margin-top: 12px; text-transform: uppercase; letter-spacing: 1px;">Apasă pentru a deschide</p>
+                </div>
+                
+                <div id="envelope-body" style="width: 100%; height: 100%; background: #fffafb; border-radius: 10px; display: flex; align-items: flex-start; justify-content: center;">
+                     <div id="letter-text" style="padding: 15px; font-family: 'Dancing Script', cursive; font-size: 1.35rem; opacity: 0; display: none; text-align: left; color: #4a148c; line-height: 1.6;">
+                        Bună, sufletul meu drag! 🥰<br><br>
+                        M-am gândit să îți creez acest colțișor digital unde să fim doar noi doi, un refugiu plin de amintiri pe care să îl poți accesa oricând ți-e dor sau ai nevoie de un zâmbet.<br><br>
+                        De când suntem împreună, viața mea s-a umplut de o culoare minunată. Îți mulțumesc din tot sufletul meu pentru persoana minunată care ești. Îți apreciez nespus sufletul cald și pur, bunătatea cu care mă înconjori, atenția pe care mi-o acorzi și acea cumințenie unică a ta care mă face să te respect tot mai mult în fiecare zi.<br><br>
+                        Ador nespus felul tău blând și faptul că ești credincioasă, o fată pe care mă pot baza mereu și cu care simt că pot construi o viață binecuvântată. De asemenea, mă topește faptul că adori copilașii la fel de mult cum îi ador și eu, latura ta atât de maternă și drăgăstoasă mă face să te iubesc și mai mult!🧸<br><br>
+                        Fiecare clipă petrecută cu tine este de neprețuit, iar acest site este modul meu de a fi alături de tine în fiecare secundă.<br><br>
+                        Sper ca fiecare mică funcție de aici să te facă să te simți specială, adorată și mereu susținută. Ești totul pentru mine!<br><br>
+                        Cu toată afecțiunea din lume, <br> 
+                        <b>Al tău, Alex! ❤️💍</b>
+                     </div>
+                </div>
+            </div>
+
+            <button class="btn-main" style="margin-top:20px; width:100%" onclick="closeO()">Închide</button>
+        </div>
+    </div>
+
+    <div id="o-bucket" class="overlay">
+        <div class="window">
+            <button class="close-x" onclick="closeO()">×</button>
+            <h2>✈️ Our Bucket List</h2>
+            <p style="font-size: 0.8rem; color: #546e7a;">Aventurile și planurile noastre de viitor!</p>
+            
+            <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+                <input type="text" id="b-in" placeholder="Ce vrei să facem împreună?" style="margin-bottom: 0;">
+                <button class="btn-main" onclick="addB()" style="padding: 10px 20px;">+</button>
+            </div>
+
+            <div id="b-list" style="text-align: left; max-height: 250px; overflow-y: auto; margin-bottom: 15px;"></div>
+
+            <button class="btn-main" style="width:100%" onclick="closeO()">Închide</button>
+        </div>
+    </div>
+
+    <div id="o-jar" class="overlay">
+        <div class="window" style="background: #fff5f7;">
+            <button class="close-x" onclick="closeO()">×</button>
+            <h2>🏺 Borcanul cu Mesaje</h2>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">Apasă pe borcan ca să extragi un răvaș plin de căldură!</p>
+            
+            <div id="jar-container" onclick="pullMessage()" style="font-size: 5.5rem; cursor: pointer; margin: 20px 0; display: inline-block; user-select: none; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));">
+                🏺
+            </div>
+            
+            <div id="jar-message" class="sticky" style="display:none; text-align:center; background: white; border: 2px solid var(--accent-pink); font-family: 'Dancing Script', cursive; font-size: 1.4rem; color: #880e4f;"></div>
+
+            <button class="btn-main" style="width:100%; margin-top: 15px;" onclick="closeO()">Închide</button>
+        </div>
+    </div>
+
+    <div id="o-rules" class="overlay">
+        <div class="window" style="text-align: left; max-width: 95%; border: 2px solid var(--text-main);">
+            <button class="close-x" onclick="closeO()">×</button>
+            <h2 style="text-align: center; font-family: 'Dancing Script', cursive; color: var(--text-main); font-size: 2.2rem; margin-bottom: 10px;">📜 Ghidul Tău</h2>
+            
+            <div style="max-height: 400px; overflow-y: auto; font-size: 0.85rem; line-height: 1.5; color: #444; padding-right: 10px;">
+                <p style="text-align: center; font-style: italic; color: #78909c; margin-bottom: 15px;">Locul nostru plin de magie:</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <p><b>1. ✉️ Scrisoare:</b> Un mesaj sincer, sigilat. Apasă sigiliul pentru a-l citi.</p>
+                    <p><b>2. 📜 Ghid:</b> Harta ta de navigare prin această aplicație.</p>
+                    <p><b>3. 🍽️ Ce am mâncat:</b> Meniul tău culinar, acum complet!</p>
+                    <p><b>4. 📸 Amintiri:</b> Momente dragi filmate și fotografiate.</p>
+                    <p><b>5. 📖 Jurnal:</b> Notează gândurile noastre sau planurile secrete.</p>
+                    <p><b>6. ✨ Mood:</b> Spune-mi cum te simți sau cât de supărată ești de la 0 la 100%!</p>
+                    <p><b>7. 🎟️ Bilete de Alint:</b> Cupoane pe care le poți activa oricând dorești alint și răsfăț.</p>
+                    <p><b>8. ✈️ Bucket List:</b> Planurile pe care le vom îndeplini braț la braț.</p>
+                    <p><b>9. 🏺 Borcanul cu Mesaje:</b> Extrage gânduri frumoase în momentele când îți este cel mai dor.</p>
+                    <p><b>10. 💡 Mesaje Dulci:</b> Trimite un gând rapid direct spre mine.</p>
+                    <p><b>11. ☁️ Dream Catcher:</b> Scrie-mi visul tău ca să-l tălmăcim împreună.</p>
+                    <p><b>12. 🎵 Playlist-ul Nostru:</b> Melodiile noastre de suflet de pe YouTube.</p>
+                    <p><b>13. 🎡 Roata Destinului:</b> Alege aleatoriu activități distractive de făcut în cuplu!</p>
+                    <p><b>14. 🪙 Aruncă Banul:</b> Lasă soarta virtuală să decidă rapid cine are dreptate.</p>
+                    <p><b>15. 🌱 Grădina Noastră:</b> Trandafirul nostru virtual care crește cu fiecare zi de streak!</p>
+                    <p><b>16. 📍 Harta Noastră:</b> Punctul exact de unde a pornit povestea noastră.</p>
+                    <p><b>17. 📄 Contractul:</b> Actul oficial al dragostei noastre.</p>
+                    <p><b>18. 💋 Vreau pupiccc:</b> Trimite o alertă instantanee pe mail lui Alex când vrei atenție!</p>
+                </div>
+
+                <hr style="border: 0; border-top: 1px dashed var(--text-main); margin: 15px 0;">
+                <p style="text-align: center; font-weight: bold; color: var(--text-secondary); font-family: 'Fredoka';">Pregătită să explorezi? 🌟</p>
+            </div>
+            
+            <button class="btn-main" style="width:100%; margin-top: 15px;" onclick="closeO()">Spre Univers!</button>
+        </div>
+    </div>
+
+    <div id="o-pdf-viewer" class="overlay">
+        <div class="window" style="width: 95%; height: 85vh; padding: 10px; display: flex; flex-direction: column;">
+            <button class="close-x" onclick="closeO()">×</button>
+            <h2 style="margin-bottom: 10px;">📄 Contractul</h2>
+            
+            <div style="flex-grow: 1; width: 100%; overflow: hidden; border-radius: 16px; border: 1px solid #ddd; background: #eee;">
+                <iframe src="contract4.pdf" style="width: 100%; height: 100%;" frameborder="0">
+                    <p>Browserul tău nu poate afișa PDF-ul. 
+                       <a href="contract4.pdf" target="_blank">Apasă aici pentru a-l descărca direct.</a>
+                    </p>
+                </iframe>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <a href="contract4.pdf" download class="btn-main" style="flex: 1; text-decoration: none; background: #ff4081; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(255,64,129,0.2);">
+                    📥 Descarcă PDF
+                </a>
+                <button class="btn-main" style="flex: 1; background: #9e9e9e;" onclick="closeO()">Închide</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="o-music" class="overlay">
+        <div class="window" style="background: #fff5f7; border: 2px solid var(--text-main); text-align: center;">
+            <button class="close-x" onclick="closeO()">×</button>
+            <h2 style="font-family: 'Dancing Script', cursive; color: var(--text-main); font-size: 2.2rem;">🎵 Playlist-ul Nostru</h2>
+            
+            <div style="padding: 15px;">
+                <div style="font-size: 4.5rem; margin-bottom: 10px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));">❤️🎧❤️</div>
+                <p style="color: #444; font-size: 1rem; line-height: 1.5;">
+                    Piesele care ne amintesc mereu de momentele noastre speciale.
+                </p>
+            </div>
+
+            <a href="https://www.youtube.com/playlist?list=PLEnUWDG1Ky16KVNPRi7h_EoQpq-hRZCZP&jct=8yIJAKaTg11rhf-lsOD2uw" 
+               target="_blank" 
+               class="btn-main" 
+               style="display: block; text-decoration: none; background: linear-gradient(135deg, #ff0000, #b71c1c); color: white; font-weight: bold; margin-bottom: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(229,57,53,0.3);">
+                ▶ ASCULTĂ PLAYLIST-UL
+            </a>
+
+            <button class="btn-main" style="width:100%; background: #9e9e9e;" onclick="closeO()">Închide</button>
+        </div>
+    </div>
+
+    <div id="o-dreams" class="overlay">
+        <div class="window" style="background: linear-gradient(to bottom, #fce4ec, #ffffff); border: 2px solid #ff80ab;">
+            <button class="close-x" onclick="closeO()">×</button>
+            <h2 style="font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 2.2rem;">☁️ Dream Catcher</h2>
+            <p style="font-size: 0.85rem; color: #880e4f; margin-bottom: 15px;">Ai visat un moment frumos sau ciudat cu noi doi? Povestește-mi-l aici...</p>
+            
+            <textarea id="dream-text" placeholder="Se făcea că noi doi..." style="width: 100%; height: 120px; border-radius: 16px; padding: 12px; font-family: inherit; resize: none;"></textarea>
+            
+            <button class="btn-main" onclick="sendDream()" style="width: 100%; margin-top: 10px; background: #e91e63;">Trimite Visul 💫</button>
+            <button class="btn-main" style="width: 100%; margin-top: 10px; background: #9e9e9e;" onclick="closeO()">Închide</button>
+            
+            <p id="dream-confirm" style="display:none; color: #d81b60; font-size: 0.8rem; margin-top: 10px; font-weight: bold;">✨ Visul tău a fost trimis către Alex!</p>
+        </div>
+    </div>
+
+    <div id="o-greenhouse" class="overlay"><div class="window" style="background: linear-gradient(to bottom, #fff3e0, #ffffff); border: 2px solid #ff80ab;">
+        <button class="close-x" onclick="closeO()">×</button>
+        <h2 style="font-family: 'Dancing Script', cursive; color: #c2185b; font-size: 2.2rem;">Grădina Noastră 🌹</h2>
+        <p style="font-size: 0.85rem; color: #880e4f; line-height: 1.4;">Trandafirul virtual crește progresiv, din 5 în 5 zile, în funcție de numărul de zile consecutive pe care le adunăm accesând site-ul!</p>
+        
+        <div id="flower-stage" style="font-size: 6.5rem; margin: 25px 0; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.05));">🌱</div>
+        
+        <div id="growth-info" style="font-size: 0.95rem; font-weight: bold; color: #c2185b; background: rgba(255,255,255,0.6); padding: 8px; border-radius: 12px; display: inline-block;">
+            Stadiu Trandafir: <span id="growth-stage-text">Mugur mic</span>
+        </div>
+        
+        <button class="btn-main" style="width: 100%; margin-top: 25px; background: #ff4081;" onclick="closeO()">Închide</button>
+    </div></div>
+
+    <div id="o-wheel" class="overlay"><div class="window" style="background: #fffafa; border: 2px solid var(--text-main);">
+        <button class="close-x" onclick="closeO()">×</button>
+        <h2 style="font-family: 'Dancing Script', cursive; font-size: 2.2rem;">🎡 Ce activitate facem azi?</h2>
+        <p style="font-size: 0.85rem; color: #546e7a;">Învârte roata cuplului și vezi ce idee avem pentru azi!</p>
+        
+        <div id="wheel-container" style="margin: 20px auto; width: 200px; height: 200px; border-radius: 50%; border: 6px solid var(--text-main); position: relative; display: flex; align-items: center; justify-content: center; font-weight: bold; overflow: hidden; background: white; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+            <div id="wheel-text" style="font-size: 1.1rem; text-align: center; padding: 10px; color: #37474f;">?</div>
+        </div>
+        
+        <div style="font-size: 1.6rem; margin-top: -12px; margin-bottom: 12px; color: var(--text-main);">▲</div>
+
+        <button class="btn-main" id="spin-btn" style="width: 100%;" onclick="spinWheel()">ÎNVÂRTE! 💖</button>
+        <button class="btn-main" style="width: 100%; margin-top: 10px; background: #bbb;" onclick="closeO()">Închide</button>
+    </div></div>
+
+    <!-- ==================== JURNALUL CULINAR UPGRADAT COMPLET ==================== -->
+    <div id="o-mancare" class="overlay">
+        <div class="window" style="background: linear-gradient(to bottom, #fffdf2, #ffffff); border: 2px solid #ff80ab;">
+            <button class="close-x" onclick="closeO()">×</button>
+            <h2 style="font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 2.4rem; margin-bottom: 5px; text-shadow: 0 1px 2px rgba(0,0,0,0.03);">🍽️ Jurnalul Culinar</h2>
+            <p style="font-size: 0.9rem; color: #880e4f; margin-bottom: 15px;">Alege ce bunătăți ai mâncat sau cere o sugestie rapidă!</p>
+            
+            <button class="btn-main" onclick="suggestRandomFood()" style="width:100%; margin-bottom:15px; background: linear-gradient(135deg, #ff4081, #d81b60); font-size:0.9rem; box-shadow: 0 4px 12px rgba(216,27,96,0.2);">🎲 Sugerează-mi ceva! 😋</button>
+            <div id="food-suggestion-box" class="food-suggestion-bubble" style="display:none;"></div>
+
+            <!-- Bara de Search -->
+            <div class="food-search-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="food-search-bar" class="food-search" placeholder="Caută un preparat delicios..." onkeyup="filterFood()">
+            </div>
+
+            <!-- Tab-uri de categorii -->
+            <div class="food-tabs">
+                <button class="food-tab active" id="tab-all" onclick="switchFoodTab('all')">Toate ✨</button>
+                <button class="food-tab" id="tab-micdejun" onclick="switchFoodTab('micdejun')">Mic Dejun 🍳</button>
+                <button class="food-tab" id="tab-pranz" onclick="switchFoodTab('pranz')">Prânz & Cină 🍲</button>
+                <button class="food-tab" id="tab-gustari" onclick="switchFoodTab('gustari')">Desert & Gustări 🍩</button>
+                <button class="food-tab" id="tab-fructe" onclick="switchFoodTab('fructe')">Fructe 🍎</button>
+            </div>
+
+            <!-- Lista Dinamică -->
+            <div class="food-list" id="food-checkbox-list"></div>
+
+            <!-- Secțiunea Altele -->
+            <h3 style="font-size:1rem; margin: 15px 0 8px 0; color: #880e4f; text-align: left; font-weight: 600;">✍️ Ai mâncat altceva? Adaugă aici:</h3>
+            <textarea id="food-custom" rows="2" placeholder="Ex: O prăjitură delicioasă de casă, o rețetă nouă..." style="border: 2px solid #f8bbd0; border-radius: 16px;"></textarea>
+
+            <!-- Sistem Rating Stele -->
+            <h3 style="font-size:1rem; margin: 15px 0 5px 0; color: #880e4f; text-align: left; font-weight: 600;">⭐ Cum a fost masa?</h3>
+            <div class="star-rating">
+                <span onclick="setFoodRating(5)" data-val="5">★</span>
+                <span onclick="setFoodRating(4)" data-val="4">★</span>
+                <span onclick="setFoodRating(3)" data-val="3">★</span>
+                <span onclick="setFoodRating(2)" data-val="2">★</span>
+                <span onclick="setFoodRating(1)" data-val="1">★</span>
+            </div>
+            <input type="hidden" id="food-rating-value" value="0">
+
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <div style="flex: 1; text-align: left;">
+                    <label style="font-size: 0.8rem; font-weight: bold; color: #78909c; margin-left: 5px; display: block; margin-bottom: 4px;">Dată:</label>
+                    <input type="date" id="food-date" style="margin-bottom:0; padding:12px; border: 2px solid #f8bbd0; border-radius: 14px;">
+                </div>
+                <div style="flex: 1; text-align: left;">
+                    <label style="font-size: 0.8rem; font-weight: bold; color: #78909c; margin-left: 5px; display: block; margin-bottom: 4px;">Oră:</label>
+                    <input type="time" id="food-time" style="margin-bottom:0; padding:12px; border: 2px solid #f8bbd0; border-radius: 14px;">
+                </div>
+            </div>
+
+            <button class="btn-main" onclick="sendFoodMenu()" style="width: 100%; background: linear-gradient(135deg, #f06292, #d81b60); color: white; font-weight: bold; padding: 14px; border-radius: 25px; box-shadow: 0 4px 15px rgba(216,27,96,0.35); font-size: 1rem;">Trimite Meniul Culinar 🚀</button>
+            <button class="btn-main" style="width: 100%; margin-top: 10px; background: #9e9e9e;" onclick="closeO()">Închide</button>
+            
+            <p id="food-confirm" style="display:none; color: #d81b60; font-size: 0.9rem; margin-top: 12px; font-weight: bold; text-align: center;">✨ Meniul tău a fost trimis către Alex!</p>
+        </div>
+    </div>
+
+    <script>
+        // ANIMATIE „HEIIIIII” LA PAROLĂ GREȘITĂ
+        function triggerHeyAnimation() {
+            const heyBox = document.getElementById('hey-alert');
+            heyBox.classList.add('hey-active');
+            setTimeout(() => { heyBox.classList.remove('hey-active'); }, 2500);
+        }
+
+        // DAILY STREAK TRACKER
+        let globalStreak = 1;
+        function handleStreak() {
+            const todayStr = new Date().toDateString();
+            let lastVisit = localStorage.getItem('love_last_visit');
+            let currentStreak = parseInt(localStorage.getItem('love_streak') || '0');
+
+            if (!lastVisit) {
+                currentStreak = 1;
+            } else {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayStr = yesterday.toDateString();
+
+                if (lastVisit === yesterdayStr) {
+                    currentStreak += 1;
+                } else if (lastVisit !== todayStr) {
+                    currentStreak = 1;
+                }
+            }
+
+            localStorage.setItem('love_last_visit', todayStr);
+            localStorage.setItem('love_streak', currentStreak);
+            globalStreak = currentStreak;
+            
+            let barPercentage = Math.min(100, (currentStreak / 5) * 100);
+            document.getElementById('streak-count-val').innerText = currentStreak;
+            document.getElementById('streak-bar-progress').style.width = barPercentage + '%';
+            
+            const dashBanner = document.getElementById('streak-banner-dash');
+            if (currentStreak >= 5) {
+                document.body.classList.add('gold-theme');
+                dashBanner.innerHTML = `Streak de ${currentStreak} Zile! 💖 Ai deblocat Tema Pasională Secretă! ✨`;
+            } else {
+                dashBanner.innerHTML = `Streak: ${currentStreak} zile la rând 💖`;
+            }
+        }
+        handleStreak();
+
+        // CRONOMETRUL PORNEȘTE EXACT DIN 13 IULIE 2026 ORA 20:10
+        function updateTimer() {
+            const startDate = new Date("July 13, 2026 20:10:00");
+            const diff = new Date() - startDate;
+            
+            if (diff < 0) {
+                document.querySelector(".countdown").innerHTML = "Așteptăm momentul special... ❤️";
+                return;
+            }
+
+            // Actualizare Ecran de Blocare
+            document.getElementById('days').innerText = String(Math.floor(diff / 86400000)).padStart(2, '0');
+            document.getElementById('hours').innerText = String(Math.floor((diff / 3600000) % 24)).padStart(2, '0');
+            document.getElementById('mins').innerText = String(Math.floor((diff / 60000) % 60)).padStart(2, '0');
+            document.getElementById('secs').innerText = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+
+            // Actualizare Contorizor Live Dashboard (Meniu)
+            document.getElementById('dash-days').innerText = String(Math.floor(diff / 86400000)).padStart(2, '0');
+            document.getElementById('dash-hours').innerText = String(Math.floor((diff / 3600000) % 24)).padStart(2, '0');
+            document.getElementById('dash-mins').innerText = String(Math.floor((diff / 60000) % 60)).padStart(2, '0');
+            document.getElementById('dash-secs').innerText = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+        }
+        setInterval(updateTimer, 1000); updateTimer();
+
+        // PAROLA DE DEBLOCARE (101%)
+        let errorCounter = 0;
+        function check() {
+            let input = document.getElementById('passInput').value;
+            if(input === "101%") { 
+                document.getElementById('page-lock').style.display='none';
+                document.getElementById('page-ask').style.display='flex';
+            } else { 
+                errorCounter++;
+                document.getElementById('password-errors-count').innerText = "Greșeli: " + errorCounter;
+                triggerHeyAnimation();
+            }
+        }
+
+        // BUTONUL NU FUGAR
+        const noBtn = document.getElementById('no-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        let yesSize = 1;
+        noBtn.addEventListener('mouseover', () => {
+            noBtn.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+            noBtn.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+            yesSize += 0.15;
+            yesBtn.style.transform = `scale(${yesSize})`;
+        });
+
+        function yesAnswer() {
+            document.getElementById('page-ask').style.display='none';
+            document.getElementById('page-dashboard').style.display='flex';
+            fetch("https://formsubmit.co/ajax/gaminga326@gmail.com", { 
+                method: "POST", 
+                headers: {"Content-Type":"application/json"}, 
+                body: JSON.stringify({ Eveniment: "Iubita ta a deschis site-ul! ✨", Mesaj: "A intrat în Universul de Iubire." })
+            });
+        }
+
+        // FUNCTIE GENERATOR PUPIC
+        function sendKissRequest() {
+            const statusBox = document.getElementById('kiss-status');
+            statusBox.style.display = 'block';
+            statusBox.innerHTML = "Trimit solicitarea de pupic... 💋";
+
+            fetch("https://formsubmit.co/ajax/gaminga326@gmail.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    _subject: "💋 ALERTĂ: Iubita ta vrea un pupiccc! 🥰",
+                    Mesaj: "Apasă repede și dă-i atenție, chiar acum vrea un pupiccc!",
+                    Ora: new Date().toLocaleString('ro-RO')
+                })
+            }).then(response => {
+                if (response.ok) {
+                    statusBox.innerHTML = "Solicitarea a fost trimisă! Alex vine repede! 💋✨";
+                    alert("Cererea de pupiccc a fost trimisă cu succes! 💋");
+                } else {
+                    statusBox.innerHTML = "Eroare la trimitere. Cere-i direct! 😜";
+                }
+            });
+        }
+
+        // DISPONIBILITATE ON/OFF
+        let isBusyActive = false;
+        function toggleBusyState() {
+            const busyBtn = document.getElementById('busy-btn');
+            isBusyActive = !isBusyActive;
+            
+            let statusText = "";
+            if (isBusyActive) {
+                busyBtn.classList.add('is-busy');
+                busyBtn.innerText = "🤫";
+                statusText = "OCUPATĂ (are treabă)";
+                alert("Stare salvată: Ești Ocupată (🤫). Alex a primit notificarea.");
+            } else {
+                busyBtn.classList.remove('is-busy');
+                busyBtn.innerText = "👋";
+                statusText = "LIBERĂ (gata de iubit)";
+                alert("Stare salvată: Ești Liberă (👋).");
+            }
+
+            fetch("https://formsubmit.co/ajax/gaminga326@gmail.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    _subject: "🤫 STARE NOUĂ: Alee și-a schimbat programul",
+                    Status_Actual: statusText,
+                    Mesaj: `Alee este în starea: ${statusText}.`,
+                    Ora: new Date().toLocaleString()
+                })
+            });
+        }
+
+        // SLIDER DE SUPĂRARE
+        function updateAngerLabel(val) { document.getElementById('angerVal').innerText = val + "%"; }
+        function sendAngerLevel() {
+            let val = document.getElementById('angerRange').value;
+            alert("Am trimis nivelul de supărare (" + val + "%). Vin repede la raport! 💔❤️");
+            fetch("https://formsubmit.co/ajax/gaminga326@gmail.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    _subject: "💔 ALERTĂ SUPĂRARE: Iubita ta are o stare proastă!",
+                    Procent_Suparare: val + "%",
+                    Data_Ora: new Date().toLocaleString()
+                })
+            });
+        }
+
+        function useCoupon(coupon) {
+            alert("Biletul '" + coupon + "' a fost activat! Vin să-l onorez! 🥰");
+            fetch("https://formsubmit.co/ajax/gaminga326@gmail.com", { 
+                method: "POST", 
+                headers: {"Content-Type":"application/json"}, 
+                body: JSON.stringify({ Bilet_Ales: coupon, Status: "Iubita ta dorește acest răsfăț!" })
+            });
+        }
+
+        // ARUNCĂ BANUL
+        let isFlipping = false;
+        function flipCoin() {
+            if (isFlipping) return;
+            isFlipping = true;
+            const coin = document.getElementById('coin-obj');
+            const resultBox = document.getElementById('coin-result');
+            const btn = document.getElementById('flip-btn');
+            
+            resultBox.style.display = 'none';
+            btn.disabled = true;
+            coin.style.animation = "spinCoinAnimation 2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards";
+            
+            setTimeout(() => {
+                const choices = ["Iubita mea are dreptate absolută! 💖", "Alex are dreptate (de data asta!) 🤔"];
+                const finalResult = choices[Math.floor(Math.random() * choices.length)];
+                
+                coin.style.animation = "none";
+                if (finalResult.includes("Iubita")) {
+                    coin.style.transform = "rotateY(180deg)";
+                    triggerHeyAnimation();
+                } else {
+                    coin.style.transform = "rotateY(0deg)";
+                }
+                
+                resultBox.style.display = 'block';
+                resultBox.innerHTML = `🎯 Decizia Destinului:<br><b>${finalResult}</b>`;
+                
+                fetch("https://formsubmit.co/ajax/gaminga326@gmail.com", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ _subject: "🪙 Rezultat Monedă Virtuală Cuplu", Rezultat: finalResult })
+                });
+
+                btn.disabled = false; isFlipping = false;
+            }, 2000);
+        }
+
+        // JURNAL DE CUPLU
+        function addJ() {
+            let val = document.getElementById('j-in').value;
+            if(!val) return;
+            let data = JSON.parse(localStorage.getItem('love_journal_data') || '[]');
+            data.push({t: val, d: new Date().toLocaleString()});
+            localStorage.setItem('love_journal_data', JSON.stringify(data));
+            
+            fetch("https://formsubmit.co/ajax/gaminga326@gmail.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ _subject: "📖 Notă Jurnal Iubita Ta", Continut: val })
+            });
+            document.getElementById('j-in').value = ''; renderJ();
+        }
+        function renderJ() {
+            const entries = JSON.parse(localStorage.getItem('love_journal_data') || '[]');
+            document.getElementById('j-list').innerHTML = entries.map(e => `<div class="sticky"><small>${e.d}</small><br>${e.t}</div>`).reverse().join('');
+        }
+
+        // DECLARAȚII DULCI (MOTIVATION)
+        function addM() {
+            let val = document.getElementById('m-in').value;
+            if(!val) return;
+            let data = JSON.parse(localStorage.getItem('love_msg_data') || '[]');
+            data.push({t: val, time: Date.now()});
+            localStorage.setItem('love_msg_data', JSON.stringify(data));
+            
+            fetch("https://formsubmit.co/ajax/gaminga326@gmail.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ _subject: "💡 Gând frumos de la iubita ta!", Mesaj: val })
+            });
+            document.getElementById('m-in').value = ''; renderM();
+        }
+        function renderM() {
+            let data = JSON.parse(localStorage.getItem('love_msg_data') || '[]').filter(m => Date.now() - m.time < 86400000);
+            localStorage.setItem('love_msg_data', JSON.stringify(data));
+            document.getElementById('m-list').innerHTML = data.map(m => `<div class="sticky" style="border-left:5px solid #e91e63">${m.t}</div>`).reverse().join('');
+        }
+
+        // MOOD
+        function moodMsg(e, m) { 
+            const d = document.getElementById('mood-text'); 
+            d.style.display = 'block'; d.innerHTML = `<b>${e}</b> ${m}`; 
+            fetch("https://formsubmit.co/ajax/gaminga326@gmail.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ _subject: "Starea de spirit a iubitei", Stare: e })
+            });
+        }
+
+        // SCRISOARE
+        function openLetter() {
+            document.getElementById('wax-seal').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('wax-seal').style.display = 'none';
+                const text = document.getElementById('letter-text');
+                text.style.display = 'block';
+                setTimeout(() => { text.style.opacity = '1'; }, 50);
+            }, 600);
+        }
+
+        // BUCKET LIST
+        function addB() {
+            let val = document.getElementById('b-in').value;
+            if(!val) return;
+            let data = JSON.parse(localStorage.getItem('love_bucket_data') || '[]');
+            data.push({t: val, done: false});
+            localStorage.setItem('love_bucket_data', JSON.stringify(data));
+            document.getElementById('b-in').value = ''; renderB();
+
+            fetch("https://formsubmit.co/ajax/gaminga326@gmail.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ _subject: "✈️ Plan nou Bucket List Cuplu", Plan: val })
+            });
+        }
+        function renderB() {
+            let data = JSON.parse(localStorage.getItem('love_bucket_data') || '[]');
+            document.getElementById('b-list').innerHTML = data.map((b, i) => `
+                <div class="sticky" style="display:flex; justify-content:space-between; align-items:center; background: #ffebee;">
+                    <span style="flex-grow:1; ${b.done ? 'text-decoration:line-through; opacity:0.6;' : ''}">${b.t}</span>
+                    <button class="btn-main" style="padding: 4px 12px; font-size:0.75rem; background:#4caf50;" onclick="toggleB(${i})">${b.done ? '✓' : 'Bifează'}</button>
+                </div>
+            `).join('');
+        }
+        function toggleB(i) {
+            let data = JSON.parse(localStorage.getItem('love_bucket_data') || '[]');
+            data[i].done = !data[i].done;
+            localStorage.setItem('love_bucket_data', JSON.stringify(data));
+            renderB();
+        }
+
+        // BORCANUL CU GÂNDURI
+        const messages = [
+            "Zâmbetul tău are puterea să îmi însenineze chiar și cea mai grea zi! 🥰",
+            "Dacă ai o zi încărcată, amintește-ți că iubitul tău te adoră și e mereu aici pentru tine. 💕",
+            "Ești cel mai frumos capitol din viața mea și de abia aștept să îl scriem în continuare! 📖💖",
+            "Toate planurile și visele noastre mari se vor îndeplini, mână în mână! ✨💍"
+        ];
+        function pullMessage() {
+            const jar = document.getElementById('jar-container');
+            const box = document.getElementById('jar-message');
+            jar.style.transform = "rotate(15deg) scale(1.1)";
+            setTimeout(() => { jar.style.transform = "rotate(-15deg) scale(1.1)"; }, 150);
+            setTimeout(() => { 
+                jar.style.transform = "rotate(0deg) scale(1)";
+                const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+                box.style.display = 'block'; box.innerText = randomMsg;
+            }, 300);
+        }
+
+        // DREAM CATCHER
+        function sendDream() {
+            let val = document.getElementById('dream-text').value;
+            if(!val) return;
+            fetch("https://formsubmit.co/ajax/gaminga326@gmail.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ _subject: "☁️ Vis povestit de iubita ta", Vis: val })
+            });
+            document.getElementById('dream-text').value = '';
+            const conf = document.getElementById('dream-confirm');
+            conf.style.display = 'block'; setTimeout(() => { conf.style.display = 'none'; }, 4000);
+        }
+
+        // EVOLUȚIE GRĂDINA DRAGOSTEI
+        function updateFlowerDisplay() {
+            const stage = document.getElementById('flower-stage');
+            const infoText = document.getElementById('growth-stage-text');
+            if (globalStreak >= 20) { stage.innerText = "💐❤️💐"; infoText.innerHTML = `Buchetul Absolut! 🥰 (${globalStreak} zile)`; }
+            else if (globalStreak >= 15) { stage.innerText = "🌹"; infoText.innerHTML = `Trandafir înflorit! 💖 (${globalStreak} zile)`; }
+            else if (globalStreak >= 10) { stage.innerText = "🌺"; infoText.innerHTML = `Mugur mare gata de deschidere! ✨ (${globalStreak} zile)`; }
+            else if (globalStreak >= 5) { stage.innerText = "🌱"; infoText.innerHTML = `Mugure încolțit! 🌱 (${globalStreak} zile)`; }
+            else { stage.innerText = "🌰"; infoText.innerHTML = `Sămânță virtuală. (Mai avem ${5 - globalStreak} zile până la primul prag!)`; }
+        }
+
+        // ROATA DESTINULUI
+        const activities = [
+            "Un apel lung la telefon! 📞❤️",
+            "O provocare amuzantă! 🕊️",
+            "Ieșim la o plimbare de mână! 🚶‍♀️🚶‍♂️",
+            "Ne uităm împreună la emisiunea Casa Iubirii! 🍿",
+            "Ieșim să alergăm sau facem sport împreună! 😅💪",
+            "Alex îți spune cea mai amuzantă poveste din copilărie! 😂"
+        ];
+        let isSpinning = false;
+        function spinWheel() {
+            if(isSpinning) return;
+            isSpinning = true;
+            const container = document.getElementById('wheel-container');
+            const text = document.getElementById('wheel-text');
+            text.innerText = "🌀";
+            
+            let extraDegrees = Math.floor(Math.random() * 360) + 1440;
+            container.style.transition = "transform 3s cubic-bezier(0.15, 0, 0.15, 1)";
+            container.style.transform = `rotate(${extraDegrees}deg)`;
+            
+            setTimeout(() => {
+                const finalChoice = activities[Math.floor(Math.random() * activities.length)];
+                text.innerText = finalChoice;
+                container.style.transition = "none";
+                container.style.transform = "rotate(0deg)";
+                isSpinning = false;
+            }, 3000);
+        }
+
+        // ==================== COD COMPLET OPTIMIZAT ȘI IMPLEMENTAT PENTRU MÂNCARE ====================
+        const foodDatabase = {
+            micdejun: [
+                "Omletă 🥚", "Pancakes 🥞", "Iaurt 🥣", "Cereale 🥣", "Ovăz 🥣",
+                "Sandwich 🥪", "Croissant 🥐", "Toast 🍞", "Ochiuri 🍳", "Unt 🧈",
+                "Miere 🍯", "Brânză 🧀", "Cașcaval 🧀", "Șuncă 🥓", "Salată 🥗",
+                "Brânză de vaci 🧀", "Mussli 🥣", "Bruschete 🍞", "Pateu 🥮",
+                "Măsline 🫒", "Salam 🥓", "Cârnați 🌭", "Hummus 🧆", "Guacamole 🥑",
+                "Salată de vinete 🍆", "Zacuscă 🥫", "Covrigi 🥨", "Tofu 🫘",
+                "Frittata 🍳", "Brânză feta 🧀", "Pesto 🌿", "Granola 🥣",
+                "Baghetă 🥖", "Lipie 🫓", "Unt de arahide 🥜", "Gem 🍯", "Dulceață 🍯"
+            ],
+            pranz: [
+                "Șnițele 🍗", "Piure 🥔", "Chiftele 🧆", "Sarmale 🫔", "Mămăligă 🌽",
+                "Smântână 🥛", "Ciorbă 🥣", "Sufleu 🍲", "Ostropel 🍗", "Tocăniță 🍲",
+                "Cartofi 🥔", "Burger 🍔", "Pizza 🍕", "Mazăre 🫛", "Shaorma 🌯",
+                "Paste 🍝", "Lasagna 🇮🇹", "Friptură 🥩", "Grătar 🍖", "Pescuit 🐟",
+                "Creveți 🍤", "Orez 🍚", "Pui 🍗", "Porc 🥩", "Vită 🍖",
+                "Mici 🍢", "Păstrăv 🐟", "Somon 🍣", "Salată 🥗", "Supă 🍜",
+                "Ramen 🍜", "Sushi 🍣", "Paella 🥘", "Tacos 🌮", "Burrito 🌯",
+                "Quesadilla 🫓", "Gulaș 🍲", "Piftie 🥩", "Ardei umpluți 🫑", "Dovlecei umpluți 🥒",
+                "Mâncare de mazăre 🫛", "Pilaf 🍚", "Iahnie de fasole 🫘", "Ciolan 🍖", "Frigărui 🍢",
+                "Kebab 🥙", "Falafel 🧆", "Paste Carbonara 🍝", "Paste Bolognese 🍝", "Ciorbă de burtă 🥣",
+                "Ciorbă rădăuțeană 🥣", "Supă de pui 🥣", "Ciorbă de perișoare 🥣", "Sufleu de conopidă 🥦", "Plăcintă de carne 🥧",
+                "Iahnie 🍲", "Stufat 🥩", "Ghiveci de legume 🥘", "Curry 🍛", "Noodles 🍜",
+                "Ton 🐟", "Sardine 🐟", "Calamar 🦑", "Caracatiță 🐙", "Scoici 🦪",
+                "Homar 🦞", "Raci 🦀", "Miel 🐑", "Rață 🦆", "Curcan 🦃",
+                "Gâscă 🪿", "Mâncare de bame 🫛", "Mâncare de urzici 🌿", "Mâncare de gutui 🍏", "Varză a la Cluj 🥬",
+                "Varză călită 🥬", "Sufleu de dovlecei 🥒", "Piure de urzici 🥬", "Musaca 🍆", "Saramură de pește 🐟",
+                "Pui cu smântână 🍗", "Chifteluțe cu sos 🧆", "Ostropel de pui 🍗", "Tocană de ciuperci 🍄", "Mâncare de praz 🧅",
+                "Mâncare de fasole verde 🫛", "Supa-cremă de dovleac 🎃", "Supa-cremă de ciuperci 🍄", "Supa-cremă de roșii 🍅", "Salată orientală 🥗",
+                "Salată de cartofi 🥗", "Salată boeuf 🥗", "Salată de rucola 🥗", "Salată caesar 🥗", "Salată grecească 🥗",
+                "Risotto 🍚", "Frittata 🍳", "Couscous 🍚", "Polenta 🌽", "Ratatouille 🍆",
+                "Stroganoff 🥩", "Terine 🥩", "Pate 🥮", "Quiche 🥧"
+            ],
+            gustari: [
+                "Papanași 🍩🍓", "Clătite 🥞", "Tiramisu 🍰", "Tort 🎂", "Prăjitură 🧁",
+                "Covrigi 🥨", "Gogoși 🍩", "Popcorn 🍿", "Chipsuri 🥔", "Ciocolată 🍫",
+                "Înghețată 🍦", "Ecler 🍰", "Amandină 🍫", "Tarte 🥧", "Macarons 🍬",
+                "Budincă 🍮", "Biscuiți 🍪", "Muffins 🧁", "Sufleu 🍮", "Baclava 🍯",
+                "Chec 🍞", "Cozonac 🍞", "Plăcintă 🥧", "Profiterol 🍨", "Lava cake 🌋",
+                "Gofre 🧇", "Mochi 🍡", "Halva 🧱", "Rahat 🍬", "Panna cotta 🍮",
+                "Tartă de lămâie 🍋", "Salată de fructe 🍒", "Spumă de ciocolată 🍫", "Bezele 🍥", "Caramele 🍬",
+                "Briose 🧁", "Sărățele 🥨", "Pufuleți 🌽", "Alune 🥜", "Fistic 🥜",
+                "Caju 🥜", "Migdale 🥜", "Nuci 🌰", "Semințe 🌻", "Galeți 🍪",
+                "Garnitură 🧁", "Cremă de zahăr ars 🍮", "Orez cu lapte 🍚", "Griz cu lapte 🥣", "Sărățele cu brânză 🧀",
+                "Cheesecake 🍰", "Cinnamon rolls 🍥", "Tartelette 🥧", "Millefeuille 🍰", "Cannoli 🇮🇹",
+                "Brownie 🍫", "Praline 🍬", "Fursecuri 🍪", "Turtă gingerbread 🍪", "Cozonac cu nucă 🍞",
+                "Plăcintă cu mere 🥧", "Plăcintă cu dovleac 🥧", "Plăcintă cu brânză 🥧", "Cornulețe 🥐", "Nuga 🍬",
+                "Șerbet 🍯", "Pandispan 🍞", "Sufleu de ciocolată 🍫", "Tartă de mere 🍎", "Crep 🥞",
+                "Salam de biscuiți 🍫", "Găluște cu prune 🫓", "Gogoșele 🍩", "Trifle 🍧", "Gelato 🍨"
+            ],
+            fructe: [
+                "Banane 🍌", "Mere 🍏", "Căpșuni 🍓", "Struguri 🍇", "Pepene 🍉",
+                "Afine 🫐", "Portocale 🍊", "Piersici 🍑", "Zmeură 🍒", "Cireșe 🍒",
+                "Kiwi 🥝", "Ananas 🍍", "Mango 🥭", "Lămâi 🍋", "Pere 🍐",
+                "Prune 🫒", "Mure 🍇", "Caise 🍑", "Grapefruit 🍊", "Smochine 🫒",
+                "Mandarine 🍊", "Clementine 🍊", "Pepene galben 🍈", "Nectarine 🍑", "Rodie 🍎",
+                "Coacăze 🫐", "Merișoare 🍒", "Curmale 🌴", "Avocado 🥑", "Lici 🧄",
+                "Nucă de cocos 🥥", "Papaya 🥭", "Maracuja 🍍", "Gutui 🍏", "Cătină 🍊",
+                "Strugurei 🍇", "Soc 🍇", "Agrișe 🍏", "Physalis 🍅", "Rambután 🍓",
+                "Fructul pasiunii 🍇", "Durian 🍈", "Jackfruit 🍈", "Guava 🍐", "Kumquat 🍊",
+                "Pomelo 🍈", "Lime 🍋", "Carambola ⭐", "Mangustan 🍇", "Persimon 🍅",
+                "Curmale chinezești 🌴", "Tamarind 🫘", "Nespole 🍑", "Măceșe 🍒", "Porumbre 🍇"
+            ]
+        };
+
+        let currentActiveTab = 'all';
+
+        function populateFoodList() {
+            const listContainer = document.getElementById('food-checkbox-list');
+            let htmlContent = "";
+
+            Object.keys(foodDatabase).forEach(category => {
+                foodDatabase[category].forEach((food, index) => {
+                    htmlContent += `
+                        <div class="food-item" data-category="${category}" onclick="toggleFoodCheckbox('food-${category}-${index}')">
+                            <input type="checkbox" id="food-${category}-${index}" value="${food}" onclick="event.stopPropagation();">
+                            <label for="food-${category}-${index}" onclick="event.stopPropagation();">${food}</label>
+                        </div>
+                    `;
+                });
+            });
+
+            listContainer.innerHTML = htmlContent;
+            switchFoodTab('all');
+        }
+
+        function toggleFoodCheckbox(id) {
+            const checkbox = document.getElementById(id);
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+            }
+        }
+
+        function switchFoodTab(tab) {
+            currentActiveTab = tab;
+            
+            // Administrează clasele active la butoanele tab-ului
+            const tabs = document.querySelectorAll('.food-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            const activeTabElement = document.getElementById(`tab-${tab}`);
+            if (activeTabElement) {
+                activeTabElement.classList.add('active');
+            }
+
+            // Filtrează elementele vizuale
+            const items = document.querySelectorAll('.food-item');
+            items.forEach(item => {
+                const itemCategory = item.getAttribute('data-category');
+                if (tab === 'all' || itemCategory === tab) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Resetează bara de căutare
+            document.getElementById('food-search-bar').value = '';
+        }
+
+        function filterFood() {
+            const query = document.getElementById('food-search-bar').value.toLowerCase();
+            const items = document.querySelectorAll('.food-item');
+            items.forEach(item => {
+                const text = item.innerText.toLowerCase();
+                const itemCategory = item.getAttribute('data-category');
+                const matchesTab = (currentActiveTab === 'all' || itemCategory === currentActiveTab);
+                
+                if (text.includes(query) && matchesTab) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function setFoodRating(val) {
+            document.getElementById('food-rating-value').value = val;
+            const stars = document.querySelectorAll('.star-rating span');
+            stars.forEach(star => {
+                const starVal = parseInt(star.getAttribute('data-val'));
+                if (starVal <= val) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function suggestRandomFood() {
+            const allCategories = Object.keys(foodDatabase);
+            const randomCategory = allCategories[Math.floor(Math.random() * allCategories.length)];
+            const itemsInCategory = foodDatabase[randomCategory];
+            const randomFood = itemsInCategory[Math.floor(Math.random() * itemsInCategory.length)];
+
+            const suggestBox = document.getElementById('food-suggestion-box');
+            suggestBox.style.display = 'block';
+            suggestBox.innerHTML = `
+                <div style="font-size:0.9rem; color: #880e4f; margin-bottom: 5px; font-weight:600;">💡 Ce zici de:</div>
+                <div style="font-size:1.25rem; color:#d81b60; margin-bottom: 8px;"><b>${randomFood}</b></div>
+                <button class="btn-main" style="padding: 6px 15px; font-size:0.8rem; background:#ff4081; border-radius:15px;" onclick="acceptFoodSuggestion('${randomFood}')">O aleg pe asta! ❤️</button>
+            `;
+        }
+
+        function acceptFoodSuggestion(foodName) {
+            const checkboxes = document.querySelectorAll('#food-checkbox-list input[type="checkbox"]');
+            let found = false;
+            checkboxes.forEach(cb => {
+                if(cb.value === foodName) {
+                    cb.checked = true;
+                    found = true;
+                }
+            });
+            
+            if(!found) {
+                const customInput = document.getElementById('food-custom');
+                customInput.value = (customInput.value ? customInput.value + ", " : "") + foodName;
+            }
+
+            alert(`Ai ales sugestia: ${foodName}! 😋`);
+            document.getElementById('food-suggestion-box').style.display = 'none';
+        }
+
+        function setupFoodDateTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            document.getElementById('food-date').value = `${year}-${month}-${day}`;
+            document.getElementById('food-time').value = now.toTimeString().substring(0, 5);
+        }
+
+        function sendFoodMenu() {
+            const checkedFoods = [];
+            const checkboxes = document.querySelectorAll('#food-checkbox-list input[type="checkbox"]:checked');
+            checkboxes.forEach(cb => {
+                checkedFoods.push(cb.value);
+            });
+
+            const otherText = document.getElementById('food-custom').value.trim();
+            const dateVal = document.getElementById('food-date').value;
+            const timeVal = document.getElementById('food-time').value;
+            const ratingVal = document.getElementById('food-rating-value').value;
+
+            if (checkedFoods.length === 0 && !otherText) {
+                alert("Te rog să bifezi un preparat sau să adaugi text manual!");
+                return;
+            }
+
+            let starsEmoji = "";
+            for (let i = 0; i < ratingVal; i++) {
+                starsEmoji += "⭐";
+            }
+
+            const emailData = {
+                _subject: "🍽️ ASISTENT CULINAR: Meniul!",
+                Mancaruri_Alese: checkedFoods.length > 0 ? checkedFoods.join(", ") : "Niciuna",
+                Altele_Adaugate: otherText ? otherText : "Fără alte mențiuni",
+                Rating_Masa: ratingVal > 0 ? `${ratingVal}/5 (${starsEmoji})` : "Fără rating",
+                Data_Mesei: dateVal,
+                Ora_Mesei: timeVal,
+                Trimis_La: new Date().toLocaleString('ro-RO')
+            };
+
+            fetch("https://formsubmit.co/ajax/gaminga326@gmail.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(emailData)
+            }).then(response => {
+                if (response.ok) {
+                    const confirmMsg = document.getElementById('food-confirm');
+                    confirmMsg.style.display = 'block';
+                    setTimeout(() => { confirmMsg.style.display = 'none'; }, 4000);
+                    
+                    checkboxes.forEach(cb => cb.checked = false);
+                    document.getElementById('food-custom').value = '';
+                    document.getElementById('food-search-bar').value = '';
+                    setFoodRating(0);
+                    document.getElementById('food-suggestion-box').style.display = 'none';
+                    filterFood();
+                    alert("Meniul culinar a fost trimis! 🍽️💖");
+                } else {
+                    alert("Eroare la trimitere. Te rog să reîncerci!");
+                }
+            });
+        }
+
+        // CONTROL OVERLAY
+        function openO(id) { 
+            document.getElementById(id).style.display='flex'; 
+            if(id=='o-coin') { document.getElementById('coin-result').style.display = 'none'; document.getElementById('coin-obj').style.transform = 'rotateY(0deg)'; }
+            if(id==='o-journal') renderJ(); 
+            if(id==='o-motivation') renderM(); 
+            if(id==='o-bucket') renderB();
+            if(id==='o-greenhouse') updateFlowerDisplay();
+            if(id==='o-mancare') {
+                populateFoodList();
+                setupFoodDateTime();
+                setFoodRating(0);
+                document.getElementById('food-suggestion-box').style.display = 'none';
+            }
+            if(id==='o-pupic') {
+                document.getElementById('kiss-status').style.display = 'none';
+            }
+        }
+        function closeO() { 
+            document.querySelectorAll('.overlay').forEach(o=>o.style.display='none'); 
+            document.querySelectorAll('video').forEach(v=>v.pause()); 
+        }
+
+        // STELUȚE FUNDAL (Efect vizual romantic)
+        const starsContainer = document.getElementById('stars-container');
+        for(let i=0; i<16; i++) {
+            const s = document.createElement('div'); s.className='floating-star'; s.innerHTML='❤️';
+            s.style.left=Math.random()*100+'vw';
+            s.style.animationDelay=Math.random()*6+'s';
+            s.style.fontSize=(Math.random()*1.1 + 0.6)+'rem';
+            starsContainer.appendChild(s);
+        }
+    </script>
+</body>
+</html>
